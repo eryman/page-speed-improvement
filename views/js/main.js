@@ -448,11 +448,15 @@ var resizePizzas = function(size) {
   }
 
   // Iterates through pizza elements on the page and changes their widths
+  // Removed var dx from for loop to avoid forced synchronous layout issues
+  // Removed document.querySelectorAll(".randomPizzaContainer") from var dx and included it in its own variable, randomPizzas, so that the browser only has to do that work once
+  // Removed var newwidth from the for loop, since that work only needs to be done once
   function changePizzaSizes(size) {
-    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
-      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
-      var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+    var randomPizza = document.querySelectorAll(".randomPizzaContainer");
+    var dx = determineDx(randomPizza[0], size);
+    var newwidth = (randomPizza[0].offsetWidth + dx) + 'px';
+    for (var i = 0; i < randomPizza.length; i++) {
+      randomPizza[i].style.width = newwidth;
     }
   }
 
@@ -501,10 +505,19 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
-  var items = document.querySelectorAll('.mover');
+  //Changed querySelectorAll to the more efficient getElementsByClassName
+  var items = document.getElementsByClassName('mover');
+  //moved document.body.scrollTop/1250 into its own variable, so it only has to be calculated once per scroll
+  var pos = document.body.scrollTop / 1250;
+  //variable j is used in a for loop (starting on line 511) and is used to replace "i % 5"
+  var j = 0;
   for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+    var phase = Math.sin(pos + j);
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    j++;
+    if (j > 4){
+      j = 0;
+    }
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -524,7 +537,7 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  for (var i = 0; i < 23; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";

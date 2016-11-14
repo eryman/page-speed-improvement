@@ -1,5 +1,49 @@
 ## Website Performance Optimization portfolio project
 
+### How to Run
+
+1. First, download zip file or clone repository from ________
+
+#### Running Portfolio
+
+1. Open index.html in top folder
+
+#### Running pizza.html
+
+1. Open project folder > views > pizza.html
+2. If in Google Chrome, open DevTools (ctrl + shift + i for Windows, cmd + opt + i for Mac) to view timers for animation events
+
+### Optimizations
+
+#### Optimizations to Portfolio Page
+
+1. Minified (using Grunt) and inlined style.css to avoid extraneous downloads
+2. Added media query to print.css so that it isn't part of the CRP
+3. Added "async" to calls to JavaScript files, since they weren't needed in the CRP
+4. Resized large image files to reduce loading costs
+5. No longer using Google Fonts, to avoid extraneous downloads
+
+#### Optimizations to Pizza Page
+
+1. Changes made to changePizzaSizes() - views/js/main.js - line 454
+	* Removed var dx from for loop to avoid forced synchronous layout issues
+	* Removed document.querySelectorAll(".randomPizzaContainer") from var dx and included it in its own variable, randomPizzas, so that the browser only has to do that work once
+	* Removed var newwidth from the for loop, since that work only needs to be done once
+
+2. Changes made to updatePositions() - views/js/main.js - line 501
+	* Changed querySelectorAll to the more efficient getElementsByClassName
+	* Moved document.body.scrollTop/1250 into its own variable, so it only has to be calculated once per scroll
+	* Created variable j to be used in a for loop (starting on line 514) and is used to replace "i % 5," to avoid the cost of repeatedly doing that math
+
+3. Changes made to anonymous function starting on line 534 in views/js/main.js
+	* Changed for loop in line 537 so that it creates 23 pizzas, rather than the unnecessary 200 pizzas
+
+4. Minified views/js/main.js (using Grunt) to cut down on extraneous memory used
+
+5. Minified views/css/style.css to cut down on load times
+
+
+
 Your challenge, if you wish to accept it (and we sure hope you will), is to optimize this online portfolio for speed! In particular, optimize the critical rendering path and make this page render as quickly as possible by applying the techniques you've picked up in the [Critical Rendering Path course](https://www.udacity.com/course/ud884).
 
 To get started, check out the repository and inspect the code.

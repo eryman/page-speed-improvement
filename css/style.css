@@ -42,6 +42,10 @@ footer {
 }
 footer span { float: right; font-style: italic; }
 
+.mover {
+  backface-visibility: hidden;
+}
+
 /* Smartphones (portrait) */
 @media only screen and (max-width: 480px) {
   body { font-size: 12px;}
