@@ -2,7 +2,8 @@
 
 ### How to Run
 
-1. First, download zip file or clone repository from ________
+1. Clone the following git respository - https://github.com/eryman/eryman.github.io - or download as a zip file from [here](https://github.com/eryman/eryman.github.io/archive/master.zip).
+
 
 #### Running Portfolio
 
