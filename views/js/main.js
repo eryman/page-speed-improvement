@@ -450,6 +450,7 @@ var resizePizzas = function(size) {
   // Iterates through pizza elements on the page and changes their widths
   // Removed var dx from for loop to avoid forced synchronous layout issues
   // Removed document.querySelectorAll(".randomPizzaContainer") from var dx and included it in its own variable, randomPizzas, so that the browser only has to do that work once
+  // Changed querySelectorAll() to getElementsByClassName()
   // Removed var newwidth from the for loop, since that work only needs to be done once
   function changePizzaSizes(size) {
     var randomPizza = document.getElementsByClassName("randomPizzaContainer");
@@ -472,6 +473,7 @@ var resizePizzas = function(size) {
 window.performance.mark("mark_start_generating"); // collect timing data
 
 // This for-loop actually creates and appends all of the pizzas when the page loads
+// removed pizzasDiv from loop
 var pizzasDiv = document.getElementById("randomPizzas");
 for (var i = 2; i < 100; i++) {
   pizzasDiv.appendChild(pizzaElementGenerator(i));
@@ -508,16 +510,7 @@ function updatePositions() {
   var items = document.getElementsByClassName('mover');
   //moved document.body.scrollTop/1250 into its own variable, so it only has to be calculated once per scroll
   var pos = document.body.scrollTop / 1250;
-  //variable j is used in a for loop (starting on line 511) and is used to replace "i % 5"
-  /*var j = 0;
-  for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin(pos + j);
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
-    j++;
-    if (j > 4){
-      j = 0;
-    }
-  }*/
+  // refactored lines 514-521 
   var phase = [];
   for (var i = 0; i < 5; i++) {
     phase.push(Math.sin(pos + i) * 100);
@@ -541,11 +534,11 @@ function updatePositions() {
 window.addEventListener('scroll', updatePositions);
 
 // Generates the sliding pizzas when the page loads.
+// Added line of code to calculate number of pizzas based on window size
 document.addEventListener('DOMContentLoaded', function() {
-  var height = window.innerHeight;
   var cols = 8;
   var s = 256;
-  var numberOfPizzas = Math.round(height / s + 0.5) * cols;
+  var numberOfPizzas = Math.round(window.innerHeight / s + 0.5) * cols;
   console.log(numberOfPizzas);
   for (var i = 0; i < numberOfPizzas; i++) {
     var elem = document.createElement('img');
